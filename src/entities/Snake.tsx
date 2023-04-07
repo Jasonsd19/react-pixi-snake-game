@@ -1,4 +1,4 @@
-import { Sprite, useTick } from "@inlet/react-pixi"
+import { Sprite, useApp, useTick } from "@inlet/react-pixi"
 import snakeHead from "/assets/snakeHead.png"
 import snakeBody from "/assets/snakeBody.png"
 import snakeEnd from "/assets/snakeEnd.png"
@@ -15,7 +15,8 @@ interface SnakeProps {
     gameTicks: React.MutableRefObject<number>
     paused: boolean
     collideWalls: boolean
-    endGame: () => void
+    setPaused: React.Dispatch<React.SetStateAction<boolean>>
+    setGameOver: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Snake = ({
@@ -26,8 +27,10 @@ const Snake = ({
     gameTicks,
     paused,
     collideWalls,
-    endGame
+    setPaused,
+    setGameOver
 }: SnakeProps) => {
+    const app = useApp()
     const count = useRef(0)
 
     // Handles changing the snake's direction
@@ -57,8 +60,10 @@ const Snake = ({
 
     // Handles resetting the game when we lose.
     const lostGame = () => {
+        app.stop()
+        setGameOver(true)
+        setPaused(true)
         count.current = 0
-        endGame()
     }
 
     // Updates the snake's position every game tick

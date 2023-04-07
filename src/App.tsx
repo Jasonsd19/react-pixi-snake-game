@@ -4,7 +4,7 @@ import * as c from "./constants"
 import Snake from './entities/Snake'
 import * as PIXI from 'pixi.js';
 import Fruit from './entities/Fruit';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import getRandomCoords from './helpers/getRandomCoords';
 import getNewPosition from './helpers/getNewPosition';
 import getScreenDimensions from './helpers/getScreenDimensions';
@@ -22,6 +22,9 @@ function App() {
 
   // Determines the speed of the snake
   const gameTicks = useRef(c.GAME_TICKS)
+
+  //Handles displaying the game over screen
+  const [gameOver, setGameOver] = useState(false)
 
   // Handles pausing/starting the game
   const [paused, setPaused] = useState(true)
@@ -62,7 +65,7 @@ function App() {
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {
       if (e.code === "Space") {
-        setPaused(!paused)
+        gameOver ? resetGame() : setPaused(!paused)
       }
     }
 
@@ -70,7 +73,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", keyDown)
     }
-  }, [paused])
+  }, [paused, gameOver])
 
   useEffect(() => {
     setTimeout(() => {
@@ -95,15 +98,15 @@ function App() {
   }
 
   // Clean-up and reset game state
-  const endGame = () => {
+  const resetGame = () => {
     directions.current = [0]
     gameTicks.current = c.GAME_TICKS
     setScore(0)
     setSnakePos([Math.floor(c.CELLS * ((c.CELLS / 2) + 1))])
     setFruitPos(getRandomCoords([Math.floor(c.CELLS * c.CELLS / 2)]))
-    setPaused(true)
-    application.current?.stop()
-    application.current?.resize()
+    setGameOver(false)
+    setPaused(false)
+    application.current?.start()
   }
 
   const getSpeedDescription = () => {
@@ -138,9 +141,11 @@ function App() {
       <Stage width={screenDim} height={screenDim} onMount={onMount} raf={false}>
         <Container sortableChildren={true}>
           {paused && (
-            <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
+            gameOver
+              ? <Text zIndex={10} text={`Game over, you ended with a score of: ${score}\n     Press space bar to play again!`} x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
+              : <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
           )}
-          <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} endGame={endGame} />
+          <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} setPaused={setPaused} setGameOver={setGameOver} />
           <Fruit imageDim={imageDim} fruitPos={fruitPos} setFruitPos={setFruitPos} snakePos={snakePos} score={score} setScore={setScore} />
         </Container>
       </Stage >
