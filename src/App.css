@@ -1,19 +1,30 @@
 #root {
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   margin: 0 auto;
 }
 
-.headerContainer {
+.header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
+.header>* {
+  padding: 0.5rem;
+}
+
 @media screen and (max-height:400px) {
 
-  .headerContainer {
+  .header {
     flex-direction: column;
   }
-  
+}
+
+@media screen and (max-width: 550px) {
+
+  .header {
+    flex-direction: column;
+  }
+
 }

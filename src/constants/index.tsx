@@ -7,7 +7,7 @@ export const CELLS = 25
 
 // We render 60 frames per second, the game ticks determines how
 // many frames pass between each game update/tick (keep as Int)
-export const GAME_TICKS = 6
+export const GAME_TICKS = 5
 
 // How fast the game speed increases (keep as Int)
 export const GAME_SPEED_INCREASE = 1
