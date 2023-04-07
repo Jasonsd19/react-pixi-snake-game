@@ -4,27 +4,61 @@
   margin: 0 auto;
 }
 
+.gameContainer {
+  position: relative;
+  bottom: 25px;
+}
+
 .header {
+  padding: 1.5rem;
+  padding-bottom: 1.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
 .header>* {
-  padding: 0.5rem;
+  padding: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.checkbox {
+  position: relative;
+  bottom: 5px;
 }
 
 @media screen and (max-height:400px) {
 
   .header {
+    font-size: 8px;
     flex-direction: column;
   }
+
+  .header>* {
+    padding: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .checkbox {
+    position: static;
+  }
+
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 800px) {
 
   .header {
+    font-size: 8px;
     flex-direction: column;
+  }
+
+  .header>* {
+    padding: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .checkbox {
+    position: static;
   }
 
 }
