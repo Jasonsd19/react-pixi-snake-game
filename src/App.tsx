@@ -81,6 +81,12 @@ function App() {
     }, 20);
   }, [paused])
 
+  // Handles updating high score in local storage
+  useEffect(() => {
+    const highScore = parseInt(localStorage.getItem("highScore") ?? '0')
+    if (score >= highScore) localStorage.setItem("highScore", score.toString())
+  }, [gameOver])
+
   // Handles adding new snake body after eating fruit, and manages game speed
   useEffect(() => {
     if (score > 0) {
@@ -124,6 +130,8 @@ function App() {
     strokeThickness: 3
   });
 
+  const gameOverText = `Game over, you ended with a score of: ${score}\n       Your highest score was ${parseInt(localStorage.getItem("highScore") ?? '0')}.\n     Press space bar to play again!`
+
   return (
     <div className="gameContainer">
       <div className='header'>
@@ -142,7 +150,7 @@ function App() {
         <Container sortableChildren={true}>
           {paused && (
             gameOver
-              ? <Text zIndex={10} text={`Game over, you ended with a score of: ${score}\n     Press space bar to play again!`} x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
+              ? <Text zIndex={10} text={gameOverText} x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
               : <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
           )}
           <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} setPaused={setPaused} setGameOver={setGameOver} />
