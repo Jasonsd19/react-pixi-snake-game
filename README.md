@@ -7,4 +7,4 @@ To play the game:
 - Download the files locally, and unzip any contents
 - Navigate to the base directory
 - Run `npm install` and then `npm run dev`
-- Then open your browser to `localhost` on the specified port.
+- Open your browser to `localhost` on the specified port.
