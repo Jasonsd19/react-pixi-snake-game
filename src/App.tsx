@@ -115,37 +115,35 @@ function App() {
 
   // Styling for the pause menu text
   const textStyle = new PIXI.TextStyle({
-    fontSize: screenDim / 20 || 26,
+    fontSize: screenDim / 50 || 20,
     fill: "#ffffff",
-    fontFamily: "Times New Roman",
+    fontFamily: "Press Start 2P",
     strokeThickness: 3
   });
 
   return (
-    <div className='mainContainer'>
-      <div className="gameContainer">
-        <div className='header'>
-          <div>
-            Collide with walls:
-            <input type='checkbox' onChange={() => setCollideWalls(!collideWalls)} checked={collideWalls} />
-          </div>
-          <div>
-            {`Your current score is: ${score}`}
-          </div>
-          <div>
-            {getSpeedDescription()}
-          </div>
+    <div className="gameContainer">
+      <div className='header'>
+        <div className='checkbox'>
+          {"Collide with walls: "}
+          <input type='checkbox' onChange={() => setCollideWalls(!collideWalls)} checked={collideWalls} />
         </div>
-        <Stage width={screenDim} height={screenDim} onMount={onMount} raf={false}>
-          <Container sortableChildren={true}>
-            {paused && (
-              <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
-            )}
-            <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} endGame={endGame} />
-            <Fruit imageDim={imageDim} fruitPos={fruitPos} setFruitPos={setFruitPos} snakePos={snakePos} score={score} setScore={setScore} />
-          </Container>
-        </Stage >
+        <div>
+          {`Your current score is: ${score}`}
+        </div>
+        <div>
+          {getSpeedDescription()}
+        </div>
       </div>
+      <Stage width={screenDim} height={screenDim} onMount={onMount} raf={false}>
+        <Container sortableChildren={true}>
+          {paused && (
+            <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
+          )}
+          <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} endGame={endGame} />
+          <Fruit imageDim={imageDim} fruitPos={fruitPos} setFruitPos={setFruitPos} snakePos={snakePos} score={score} setScore={setScore} />
+        </Container>
+      </Stage >
     </div>
   )
 }
