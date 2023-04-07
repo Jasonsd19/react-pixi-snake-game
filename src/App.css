@@ -9,3 +9,11 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+@media screen and (max-height:400px) {
+
+  .headerContainer {
+    flex-direction: column;
+  }
+  
+}
