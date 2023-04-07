@@ -4,7 +4,7 @@ import * as c from "./constants"
 import Snake from './entities/Snake'
 import * as PIXI from 'pixi.js';
 import Fruit from './entities/Fruit';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import getRandomCoords from './helpers/getRandomCoords';
 import getNewPosition from './helpers/getNewPosition';
 import getScreenDimensions from './helpers/getScreenDimensions';
@@ -122,29 +122,31 @@ function App() {
   });
 
   return (
-    <>
-      <div className='headerContainer'>
-        <div>
-          Collide with walls: &#8202;
-          <input type='checkbox' onChange={() => setCollideWalls(!collideWalls)} checked={collideWalls} />
+    <div className='mainContainer'>
+      <div className="gameContainer">
+        <div className='header'>
+          <div>
+            Collide with walls:
+            <input type='checkbox' onChange={() => setCollideWalls(!collideWalls)} checked={collideWalls} />
+          </div>
+          <div>
+            {`Your current score is: ${score}`}
+          </div>
+          <div>
+            {getSpeedDescription()}
+          </div>
         </div>
-        <div>
-          {`Your current score is: ${score}`}
-        </div>
-        <div>
-          {getSpeedDescription()}
-        </div>
+        <Stage width={screenDim} height={screenDim} onMount={onMount} raf={false}>
+          <Container sortableChildren={true}>
+            {paused && (
+              <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
+            )}
+            <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} endGame={endGame} />
+            <Fruit imageDim={imageDim} fruitPos={fruitPos} setFruitPos={setFruitPos} snakePos={snakePos} score={score} setScore={setScore} />
+          </Container>
+        </Stage >
       </div>
-      <Stage width={screenDim} height={screenDim} onMount={onMount} raf={false}>
-        <Container sortableChildren={true}>
-          {paused && (
-            <Text zIndex={10} text="Use space bar to start or pause the game!" x={screenDim / 2} y={screenDim / 2} anchor={0.5} style={textStyle} />
-          )}
-          <Snake imageDim={imageDim} snakePos={snakePos} setSnakePos={setSnakePos} directions={directions} gameTicks={gameTicks} paused={paused} collideWalls={collideWalls} endGame={endGame} />
-          <Fruit imageDim={imageDim} fruitPos={fruitPos} setFruitPos={setFruitPos} snakePos={snakePos} score={score} setScore={setScore} />
-        </Container>
-      </Stage >
-    </>
+    </div>
   )
 }
 
